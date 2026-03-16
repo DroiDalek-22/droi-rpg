@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://3hc7go7kx8gq"]
+
+[ext_resource type="Script" uid="uid://74tyfytrj3l2" path="res://scenes/Projectiles/projectile.gd" id="1_cerap"]
+
+[node name="Projectile" type="Area2D" unique_id=637136012]
+script = ExtResource("1_cerap")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1995194603]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=966110555]
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=2080372779]
+enable_node_path = NodePath("../CollisionShape2D")

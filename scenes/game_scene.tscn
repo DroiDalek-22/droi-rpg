@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://1h8ekbvih8vu"]
+
+[ext_resource type="Script" uid="uid://c6d6tifp3kv25" path="res://scenes/game_scene.gd" id="1_onqr8"]
+[ext_resource type="PackedScene" uid="uid://b0c67wgebcvv2" path="res://scenes/world.tscn" id="1_w5aja"]
+[ext_resource type="PackedScene" uid="uid://m3xuugs7b7tw" path="res://scenes/end_game_screen.tscn" id="2_ycayy"]
+[ext_resource type="Script" uid="uid://vt585d7tq687" path="res://scenes/hud.gd" id="4_kk2rg"]
+[ext_resource type="Texture2D" uid="uid://bfp88wblsxt" path="res://art/Tiny Swords (Free Pack)/UI Elements/UI Elements/Bars/Carved_3Slides.png" id="4_rurhu"]
+[ext_resource type="Texture2D" uid="uid://dcbqt370ty1r6" path="res://art/Tiny Swords (Free Pack)/UI Elements/UI Elements/Bars/Banner_Connection_Up.png" id="5_kk2rg"]
+[ext_resource type="FontFile" uid="uid://ca5eyj2ltqv0k" path="res://art/Tiny Swords (Free Pack)/fonts/PirataOne-Regular.ttf" id="6_b5spy"]
+
+[node name="GameScene" type="Node2D" unique_id=1146515270]
+script = ExtResource("1_onqr8")
+end_game_screen_packed = ExtResource("2_ycayy")
+
+[node name="world" parent="." unique_id=1113117250 instance=ExtResource("1_w5aja")]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=44513759]
+
+[node name="HUD" type="Control" parent="UI" unique_id=1846177653]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_kk2rg")
+
+[node name="Hitpoints" type="TextureRect" parent="UI/HUD" unique_id=234081969]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 50.0
+offset_right = 470.0
+offset_bottom = 120.0
+texture = ExtResource("4_rurhu")
+
+[node name="HitpointsBar" type="TextureProgressBar" parent="UI/HUD/Hitpoints" unique_id=502576273]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -27.5
+offset_right = 190.0
+offset_bottom = 27.5
+grow_horizontal = 2
+grow_vertical = 2
+value = 100.0
+nine_patch_stretch = true
+texture_progress = ExtResource("4_rurhu")
+tint_progress = Color(0.1764706, 1, 0.1764706, 1)
+
+[node name="LevelIndicator" type="TextureRect" parent="UI/HUD" unique_id=2037062023]
+show_behind_parent = true
+layout_mode = 0
+offset_left = 49.0
+offset_top = 65.0
+offset_right = 241.0
+offset_bottom = 257.0
+texture = ExtResource("5_kk2rg")
+
+[node name="CurrentLevel" type="Label" parent="UI/HUD/LevelIndicator" unique_id=849898077]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.69411767)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("6_b5spy")
+theme_override_font_sizes/font_size = 60
+text = "-"
+horizontal_alignment = 1
+vertical_alignment = 1

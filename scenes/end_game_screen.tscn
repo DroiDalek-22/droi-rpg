@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://m3xuugs7b7tw"]
+
+[ext_resource type="Script" uid="uid://bblgk5yq0oggm" path="res://scenes/end_game_screen.gd" id="1_r6qnx"]
+[ext_resource type="FontFile" uid="uid://ca5eyj2ltqv0k" path="res://art/Tiny Swords (Free Pack)/fonts/PirataOne-Regular.ttf" id="1_ubscq"]
+[ext_resource type="Texture2D" uid="uid://b0q1qnnvwyo2r" path="res://art/Tiny Swords (Free Pack)/UI Elements/UI Elements/Buttons/Button_Blue_3Slides.png" id="2_r6qnx"]
+[ext_resource type="Texture2D" uid="uid://bgigyhreig5ul" path="res://art/Tiny Swords (Free Pack)/UI Elements/UI Elements/Buttons/Button_Blue_3Slides_Pressed.png" id="3_ouj7k"]
+[ext_resource type="Texture2D" uid="uid://dabx2t6hvtc5w" path="res://art/Tiny Swords (Free Pack)/UI Elements/UI Elements/Buttons/Button_Hover_3Slides.png" id="4_4mw7a"]
+
+[node name="EndGameScreen" type="Control" unique_id=1652281258]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r6qnx")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=99606461]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.011764706, 0.011764706, 0.011764706, 0.5294118)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=804638461]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 150
+alignment = 1
+
+[node name="Result" type="Label" parent="VBoxContainer" unique_id=1261884676]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.69411767)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("1_ubscq")
+theme_override_font_sizes/font_size = 164
+text = "Game Over"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Buttons" type="HBoxContainer" parent="VBoxContainer" unique_id=1849094176]
+layout_mode = 2
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="Restart" type="TextureButton" parent="VBoxContainer/Buttons" unique_id=1256302092]
+custom_minimum_size = Vector2(450, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("2_r6qnx")
+texture_pressed = ExtResource("3_ouj7k")
+texture_hover = ExtResource("4_4mw7a")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/Buttons/Restart" unique_id=501373023]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.69411767)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("1_ubscq")
+theme_override_font_sizes/font_size = 60
+text = "Restart"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MainMenu" type="TextureButton" parent="VBoxContainer/Buttons" unique_id=1763731183]
+custom_minimum_size = Vector2(450, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("2_r6qnx")
+texture_pressed = ExtResource("3_ouj7k")
+texture_hover = ExtResource("4_4mw7a")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/Buttons/MainMenu" unique_id=301306951]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.69411767)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("1_ubscq")
+theme_override_font_sizes/font_size = 60
+text = "Main Menu"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="VBoxContainer/Buttons/Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="VBoxContainer/Buttons/MainMenu" to="." method="_on_main_menu_pressed"]
