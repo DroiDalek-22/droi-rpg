@@ -1,0 +1,109 @@
+[gd_scene format=3 uid="uid://bwxmhp8e8ewv0"]
+
+[ext_resource type="Script" uid="uid://kt3bea515fa4" path="res://scenes/class_menu.gd" id="1_ej2v4"]
+[ext_resource type="PackedScene" uid="uid://kmi4xbcu7oam" path="res://scenes/main_menu_background.tscn" id="2_skbv6"]
+[ext_resource type="Texture2D" uid="uid://b0q1qnnvwyo2r" path="res://art/Tiny Swords (Free Pack)/UI Elements/UI Elements/Buttons/Button_Blue_3Slides.png" id="3_ur5kg"]
+[ext_resource type="Texture2D" uid="uid://bgigyhreig5ul" path="res://art/Tiny Swords (Free Pack)/UI Elements/UI Elements/Buttons/Button_Blue_3Slides_Pressed.png" id="4_0h0x2"]
+[ext_resource type="Texture2D" uid="uid://dabx2t6hvtc5w" path="res://art/Tiny Swords (Free Pack)/UI Elements/UI Elements/Buttons/Button_Hover_3Slides.png" id="5_o7iqf"]
+[ext_resource type="FontFile" uid="uid://ca5eyj2ltqv0k" path="res://art/Tiny Swords (Free Pack)/fonts/PirataOne-Regular.ttf" id="6_qcusj"]
+
+[node name="ClassMenu" type="Control" unique_id=1592628590]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ej2v4")
+
+[node name="world" parent="." unique_id=1113117250 instance=ExtResource("2_skbv6")]
+scale = Vector2(1.7, 1.7)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1608923535]
+z_index = 3
+layout_mode = 0
+offset_right = 600.0
+offset_bottom = 1080.0
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="Warrior" type="TextureButton" parent="VBoxContainer" unique_id=201892574]
+custom_minimum_size = Vector2(450, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("3_ur5kg")
+texture_pressed = ExtResource("4_0h0x2")
+texture_hover = ExtResource("5_o7iqf")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/Warrior" unique_id=1607405508]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.69411767)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("6_qcusj")
+theme_override_font_sizes/font_size = 60
+text = "Warrior"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mage" type="TextureButton" parent="VBoxContainer" unique_id=19745416]
+custom_minimum_size = Vector2(450, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("3_ur5kg")
+texture_pressed = ExtResource("4_0h0x2")
+texture_hover = ExtResource("5_o7iqf")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/Mage" unique_id=53611600]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.69411767)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("6_qcusj")
+theme_override_font_sizes/font_size = 60
+text = "Mage"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Thief" type="TextureButton" parent="VBoxContainer" unique_id=1410063715]
+custom_minimum_size = Vector2(450, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("3_ur5kg")
+texture_pressed = ExtResource("4_0h0x2")
+texture_hover = ExtResource("5_o7iqf")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/Thief" unique_id=1909851354]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.69411767)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("6_qcusj")
+theme_override_font_sizes/font_size = 60
+text = "Thief"
+horizontal_alignment = 1
+vertical_alignment = 1
