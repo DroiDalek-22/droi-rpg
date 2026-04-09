@@ -17,20 +17,16 @@ var health = 100
 var player_alive = true
 
 var attack_ip = false
-
 var attack_speed: float
 
 var current_dir = "none"
-
 var hitpoints_max: int
 
-# Définir une animation à éxecuter dès le lancement
 func _ready() -> void:
 	hitpoints_max = health
 	$AnimatedSprite2D.play("front_idle")
 	calculate_stats()
 
-# Prise en compte des scripts du movement
 func _physics_process(delta):
 	player_movement(delta)
 	enemy_attack()
@@ -39,13 +35,12 @@ func _physics_process(delta):
 	movement_loop()
 	
 	if health <= 0:
-		$AnimatedSprite2D.play("death") # Correction a faire : L'animation de mort ne se lance pas
-		player_alive = false # Ajout de système de défaite à faire
+		$AnimatedSprite2D.play("death")
+		player_alive = false
 		health = 0
 		print("player has been killed")
 		self.queue_free() 
 
-# Déplacement du joueur
 func player_movement(delta):
 	if Input.is_action_pressed("right"):
 		current_dir = "right"
@@ -83,15 +78,14 @@ func movement_loop() -> void:
 	move_direction.y = int(Input.is_action_pressed("down")) - int(Input.is_action_pressed("up"))
 	var motion: Vector2 = move_direction.normalized() * speed
 	set_velocity(motion)
-	move_and_slide()
- 
-# Mise en place des animations du personnage
+	move_and_slide() 
+
 func play_anim(movement):
 	var dir = current_dir
 	var anim = $AnimatedSprite2D
 	
 	if dir == "right":
-		anim.flip_h = false # Inversion ou non de l'image animation pour les côtés
+		anim.flip_h = false
 		if movement == 1:
 			anim.play("side_walk")
 		elif movement == 0:
@@ -117,6 +111,53 @@ func play_anim(movement):
 			if attack_ip == false:
 				anim.play("front_idle")
 
+func attack():
+	var dir = current_dir
+	
+	if Input.is_action_just_pressed("attack") and not attack_ip:
+		global.player_current_attack = true
+		attack_ip = true
+		
+		if Playerdata.Class == Playerdata.ClassChoice.Warrior:
+			# Attaque mêlée classique (conservée)
+			if dir == "right":
+				$AnimatedSprite2D.flip_h = false
+				$AnimatedSprite2D.play("side_attack")
+				$deal_attack_timer.start()
+			elif dir == "left":
+				$AnimatedSprite2D.flip_h = true
+				$AnimatedSprite2D.play("side_attack")
+				$deal_attack_timer.start()
+			elif dir == "up":
+				$AnimatedSprite2D.play("back_attack")
+				$deal_attack_timer.start()
+			elif dir == "down":
+				$AnimatedSprite2D.play("front_attack")
+				$deal_attack_timer.start()
+		else:
+			# Attaque distance (Mage/Thief) – projectile
+			$AnimatedSprite2D.play("side_attack")  # ou "cast" si tu ajoutes l'anim
+			var proj = Projectile.instantiate()
+			get_parent().add_child(proj)
+			proj.position = global_position
+			
+			# Direction selon facing
+			match dir:
+				"right": proj.direction = Vector2.RIGHT
+				"left": proj.direction = Vector2.LEFT
+				"up": proj.direction = Vector2.UP
+				"down": proj.direction = Vector2.DOWN
+			
+			$deal_attack_timer.start()  # réutilisé pour la durée d'animation
+		
+		# global.player_current_attack reste true seulement pour Warrior (melee)
+
+func _on_deal_attack_timer_timeout() -> void:
+	$deal_attack_timer.stop()
+	global.player_current_attack = false
+	attack_ip = false
+
+# Le reste du fichier reste IDENTIQUE (enemy_attack, update_health, death, etc.)
 func player():
 	pass
 
@@ -137,33 +178,6 @@ func enemy_attack():
 
 func _on_attack_cooldown_timeout() -> void:
 	enemy_attack_cooldown = true
-
-func attack():
-	var dir = current_dir
-	
-	if Input.is_action_just_pressed("attack"):
-		global.player_current_attack = true
-		attack_ip = true
-		if dir == "right":
-			$AnimatedSprite2D.flip_h = false
-			$AnimatedSprite2D.play("side_attack")
-			$deal_attack_timer.start()
-		if dir == "left":
-			$AnimatedSprite2D.flip_h = true
-			$AnimatedSprite2D.play("side_attack")
-			$deal_attack_timer.start()
-		if dir == "up":
-			$AnimatedSprite2D.play("back_attack")
-			$deal_attack_timer.start()
-		if dir == "down":
-			$AnimatedSprite2D.play("front_attack")
-			$deal_attack_timer.start()
-
-# Make the wait time in the inspector of deal_attack_time the same amount of time it takes for the animation to take place
-func _on_deal_attack_timer_timeout() -> void:
-	$deal_attack_timer.stop()
-	global.player_current_attack = false
-	attack_ip = false
 
 func update_health():
 	var healthbar = $HealthBar
