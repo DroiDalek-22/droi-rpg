@@ -3,83 +3,47 @@ extends Node2D
 signal levelup
 
 @export var end_game_screen_packed: PackedScene
-@export var pause_menu_packed: PackedScene   # ← NOUVEAU : glisse ta pause_menu.tscn ici dans l'inspecteur
 
-var total_enemies: int = 0
-var killed_enemies: int = 0
-var pause_menu: Control = null   # Référence pour pouvoir la cacher facilement
+@onready var HUD: Control = $UI/HUD
 
 func _ready() -> void:
-	# ====================== ENNEMIS ======================
-	var enemy_array: Array = get_tree().get_nodes_in_group("enemies")
-	total_enemies = enemy_array.size()
-	for enemy in enemy_array:
-		if enemy.has_signal("died"):
-			enemy.died.connect(enemy_died)
-
-	# ====================== JOUEUR ======================
+	# Plus besoin de compter ici – les ennemis s'auto-connectent
+	# (mais pour debug initial, tu peux print get_tree().get_nodes_in_group("enemies").size())
+	print("Ennemis au start : ", get_tree().get_nodes_in_group("enemies").size())
+	
 	var player = get_tree().get_first_node_in_group("player")
 	await get_tree().process_frame
 	player = get_tree().get_first_node_in_group("player")
 
 	if player == null:
-		push_error("game_scene.gd : Aucun joueur trouvé dans le groupe 'player'.")
+		push_error("game_scene.gd : Aucun joueur trouvé dans le groupe 'player'. Vérifie le groupe sur le nœud joueur.")
 		return
 
 	if player.has_method("calculates_stats"):
 		levelup.connect(player.calculates_stats)
+	else:
+		push_warning("game_scene.gd : Le joueur n'a pas la méthode calculates_stats()")
+
 	if player.has_signal("game_over"):
 		player.game_over.connect(display_end_game_screen)
+	else:
+		push_warning("game_scene.gd : Le joueur n'a pas le signal 'game_over'")
 
-	add_to_group("game_scene")  # Pour les ennemis qui s'auto-connectent
+	# Ajoute-toi au groupe pour que les ennemis te trouvent
+	add_to_group("game_scene")
+	player.update_hp_bar.connect(HUD.update_hp_bar)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):  # Touche Esc par défaut
-		toggle_pause()
-
-func toggle_pause() -> void:
-	var is_paused = get_tree().paused
-	get_tree().paused = not is_paused
-	
-	if not is_paused:  # On vient de pauser
-		if pause_menu == null and pause_menu_packed:
-			pause_menu = pause_menu_packed.instantiate()
-			pause_menu.resume_requested.connect(_on_pause_resume)
-			pause_menu.main_menu_requested.connect(_on_pause_main_menu)
-			pause_menu.quit_requested.connect(_on_pause_quit)
-			$UI.add_child(pause_menu)
-			pause_menu.show()
-	else:  # On reprend
-		if pause_menu:
-			pause_menu.hide()
-			pause_menu.queue_free()
-			pause_menu = null
-
-# ====================== CALLBACKS DU MENU PAUSE ======================
-func _on_pause_resume() -> void:
-	toggle_pause()
-
-func _on_pause_main_menu() -> void:
-	if pause_menu:
-		pause_menu.queue_free()
-		pause_menu = null
-	var scene_handler = get_node_or_null("/root/SceneHandler")
-	if scene_handler:
-		scene_handler.load_main_menu("main_menu")
-
-func _on_pause_quit() -> void:
-	get_tree().quit()
-
-# ====================== FONCTIONS EXISTANTES (inchangées) ======================
 func enemy_died(exp_reward: int) -> void:
-	killed_enemies += 1
 	experience_gained(exp_reward)
-	if killed_enemies == total_enemies:
+	
+	# Check dynamique pour victoire (après mort, car remove_from_group déjà fait)
+	if get_tree().get_nodes_in_group("enemies").is_empty():
 		display_end_game_screen(true)
 
 func experience_gained(exp_gain: int) -> void:
 	if Playerdata.level == Leveldata.MAX_LEVEL:
 		return
+	
 	var new_experience: int = Playerdata.experience + exp_gain
 	if new_experience >= Leveldata.LEVEL_THRESHOLDS[Playerdata.level - 1]:
 		level_up(new_experience)
@@ -92,19 +56,27 @@ func level_up(new_experience: int) -> void:
 	Playerdata.level += 1
 	Playerdata.experience = new_experience
 	levelup.emit()
+	HUD.update_level_indicator()
 
 func display_end_game_screen(victorious: bool = false) -> void:
-	get_tree().paused = true  # On pause aussi sur fin de partie
 	var end_game_screen_scene: Control = end_game_screen_packed.instantiate()
 	end_game_screen_scene.victorious = victorious
+	
 	var scene_handler: Node = get_node_or_null("/root/SceneHandler")
 	if scene_handler:
 		end_game_screen_scene.repeat_level.connect(scene_handler.new_game)
 		end_game_screen_scene.main_menu.connect(scene_handler.load_main_menu)
+	else:
+		push_error("game_scene.gd : SceneHandler introuvable à /root/SceneHandler")
+	
 	$UI.add_child(end_game_screen_scene)
 	await get_tree().create_timer(0.4).timeout
 	
-	var player = get_tree().get_first_node_in_group("player")
-	if player: player.process_mode = Node.PROCESS_MODE_DISABLED
-	for enemy in get_tree().get_nodes_in_group("enemies"):
-		if enemy: enemy.process_mode = Node.PROCESS_MODE_DISABLED
+	var player: CharacterBody2D = get_tree().get_first_node_in_group("player")
+	if player:
+		player.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	var enemies: Array = get_tree().get_nodes_in_group("enemies")
+	for enemy: CharacterBody2D in enemies:
+		if enemy:
+			enemy.process_mode = Node.PROCESS_MODE_DISABLED

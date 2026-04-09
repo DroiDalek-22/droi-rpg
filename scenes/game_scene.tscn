@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://c6d6tifp3kv25" path="res://scenes/game_scene.gd" id="1_onqr8"]
 [ext_resource type="PackedScene" uid="uid://b0c67wgebcvv2" path="res://scenes/world.tscn" id="1_w5aja"]
 [ext_resource type="PackedScene" uid="uid://m3xuugs7b7tw" path="res://scenes/end_game_screen.tscn" id="2_ycayy"]
-[ext_resource type="PackedScene" uid="uid://dlchc3vtc4lhg" path="res://scenes/pause_menu.tscn" id="3_b5spy"]
 [ext_resource type="Script" uid="uid://vt585d7tq687" path="res://scenes/hud.gd" id="4_kk2rg"]
 [ext_resource type="Texture2D" uid="uid://bfp88wblsxt" path="res://art/Tiny Swords (Free Pack)/UI Elements/UI Elements/Bars/Carved_3Slides.png" id="4_rurhu"]
 [ext_resource type="Texture2D" uid="uid://dcbqt370ty1r6" path="res://art/Tiny Swords (Free Pack)/UI Elements/UI Elements/Bars/Banner_Connection_Up.png" id="5_kk2rg"]
@@ -12,7 +11,6 @@
 [node name="GameScene" type="Node2D" unique_id=1146515270]
 script = ExtResource("1_onqr8")
 end_game_screen_packed = ExtResource("2_ycayy")
-pause_menu_packed = ExtResource("3_b5spy")
 
 [node name="world" parent="." unique_id=1113117250 instance=ExtResource("1_w5aja")]
 
