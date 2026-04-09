@@ -60,14 +60,12 @@ func _on_pause_resume() -> void:
 	toggle_pause()
 
 func _on_pause_main_menu() -> void:
-	get_tree().paused = false
-	var scene_handler: Node = get_node_or_null("/root/SceneHandler")
+	if pause_menu:
+		pause_menu.queue_free()
+		pause_menu = null
+	var scene_handler = get_node_or_null("/root/SceneHandler")
 	if scene_handler:
-		# On passe false car on vient du pause menu (pas d'état "victoire/défaite")
-		# Si l'argument est autre chose (String, etc.), tu pourras l'ajuster facilement
-		scene_handler.load_main_menu(false)
-	else:
-		push_error("SceneHandler introuvable")
+		scene_handler.load_main_menu("main_menu")
 
 func _on_pause_quit() -> void:
 	get_tree().quit()
